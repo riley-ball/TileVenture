@@ -1,5 +1,8 @@
 import tkinter as tk
+from PIL import Image
+
 from model import GridCoordinateTranslator
+
 
 class GameView(tk.Canvas):
     def __init__(self, master, *args, size=(6, 6), cell_size=40, **kwargs):
@@ -8,10 +11,10 @@ class GameView(tk.Canvas):
 
         self.size = size
         self.cell_size = cell_size
-        self.photo = tk.PhotoImage(file="Right.gif")
-        self.photo1 = tk.PhotoImage(file="Down.gif")
-        self.photo2 = tk.PhotoImage(file="Left.gif")
-        self.photo3 = tk.PhotoImage(file="Up.gif")
+        self.photo = tk.PhotoImage(file="images/Right.gif")
+        self.photo1 = tk.PhotoImage(file="images/Down.gif")
+        self.photo2 = tk.PhotoImage(file="images/Left.gif")
+        self.photo3 = tk.PhotoImage(file="images/Up.gif")
 
         self.width, self.height = width, height = tuple(i * self.cell_size
                                                         for i in self.size)
