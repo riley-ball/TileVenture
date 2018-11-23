@@ -1,6 +1,8 @@
 import tkinter as tk
+
 from model import GameModel
 from view import GameView
+
 
 class Player(object):
     def __init__(self):
@@ -72,6 +74,7 @@ class GameApp(object):
 
 def main():
     root = tk.Tk()
+    root.geometry("900x540")
     game = GameApp(root)
     root.lift()
     root.attributes('-topmost', True)
