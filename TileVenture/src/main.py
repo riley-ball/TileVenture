@@ -51,6 +51,8 @@ class GameApp(object):
     def _key_press(self, event):
         key = event.keysym
 
+        # TODO change how the view is refreshed (center around character)
+
         if key == "Up":
             if self._player_grid_pos[1]-1 >= 0:
                 self._player_grid_pos = (self._player_grid_pos[0], self._player_grid_pos[1]-1)
