@@ -3,6 +3,7 @@ from typing import Tuple, List
 CELL_SIZE = 32
 PIXEL_SIZE = (24, 12)
 GRID_SIZE = (30, 18)
+MAP_SIZE = 100
 
 
 class GridCoordinateTranslator:

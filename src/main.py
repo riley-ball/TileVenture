@@ -25,7 +25,6 @@ class GameApp(object):
                                      bg='#1F1F1F')
         view.pack()
 
-        view.draw_borders(game.grid.get_border_coordinates())
 
         self._setup_game()
         self.refresh_view()
@@ -40,9 +39,6 @@ class GameApp(object):
         self._player_grid_pos = (14, 8)
         self._player_direction = 'Down'
 
-    def colour_tile(self):
-        self._view.draw_tiles(self._player_grid_pos)
-
     def refresh_view(self):
         self._view.draw_terrain(self._player_grid_pos)
         self._view.draw_player(self._player_direction)
@@ -55,6 +51,7 @@ class GameApp(object):
         if key == "Up":
             new_coords = (self._player_grid_pos[0], self._player_grid_pos[1]-1)
             check_coords = (self._player_grid_pos[0], self._player_grid_pos[1]-9)
+            # if new_coords
             if check_coords in self._view.get_map():
                 self._player_grid_pos = new_coords
                 self._player_direction = 'Up'

@@ -1,10 +1,9 @@
 import tkinter as tk
 from PIL import Image
 
-from model import GridCoordinateTranslator, GRID_SIZE
+from model import GridCoordinateTranslator, GRID_SIZE, MAP_SIZE
 
 OFFSET = 16
-
 
 class GameView(tk.Canvas):
     def __init__(self, master, *args, size, cell_size, **kwargs):
@@ -102,24 +101,6 @@ class GameView(tk.Canvas):
     
     def get_map(self):
         return self.map
-
-    def draw_borders(self, borders, fill='goldenrod'):
-        """
-        Draws the border lines of the game view, after first removing any existing
-
-        Parameters:
-            borders (iter<tuple<int, int>,
-                          tuple<int, int>>): A series of pixel positions for
-                                             laying out the borders of the view.
-            fill (str): The colour of the borders to draw
-        """
-        self.delete('border')
-        for start, end in borders:
-            self.create_line(start, end, fill=fill, tag='border')
-
-    def draw_tiles(self, grid):
-        grid_pos = self.translator.grid_to_coords_corner(grid)
-        self.create_rectangle(0.5+grid_pos[0], 0.5+grid_pos[1], grid_pos[0]+58.5, grid_pos[1]+58.5)
     
     """
     EVERYTHING IN THIS FUNCTION IS HARDCODED :(
@@ -127,50 +108,42 @@ class GameView(tk.Canvas):
 
     def generate_map(self):
         # L: 1
-        width = GRID_SIZE[0] + 500
-        height = GRID_SIZE[1] + 500
+        width = MAP_SIZE
+        height = MAP_SIZE
         count = 0
         for x in range(width):
             for y in range(height):
                 # top left
                 if x == 0 and y == 0:
-                    # self.create_image(OFFSET + x * 32, OFFSET + y * 32, image= self.photo000, tag='Terrain')
                     self.map[(x, y)] = self.photo000, 
 
                 # top right
                 elif x == width-1 and y == 0:
-                    # self.create_image(OFFSET + x * 32, OFFSET + y * 32, image= self.photo002, tag='Terrain')
                     self.map[(x, y)] = self.photo002, 
 
                 # bottom left
                 elif x == 0 and y == height-1:
-                    # self.create_image(OFFSET + x * 32, OFFSET + y * 32, image= self.photo046, tag='Terrain')
                     self.map[(x, y)] = self.photo046, 
 
                 # bottom right
                 elif x == width-1 and y == height-1:
-                    # self.create_image(OFFSET + x * 32, OFFSET + y * 32, image= self.photo048, tag='Terrain')
                     self.map[(x, y)] = self.photo048, 
                 
                 # top border
 
                 elif y == 0:
-                    # self.create_image(OFFSET + x * 32, OFFSET + y * 32, image= self.photo001, tag='Terrain')
                     self.map[(x, y)] = self.photo001, 
 
                 # bottom border
                 elif y == height-1:
-                    # self.create_image(OFFSET + x * 32, OFFSET + y * 32, image= self.photo047, tag='Terrain')
                     self.map[(x, y)] = self.photo047, 
 
                 # left border
                 elif x == 0:
-                    # self.create_image(OFFSET + x * 32, OFFSET + y * 32, image= self.photo023, tag='Terrain')
                     self.map[(x, y)] = self.photo023, 
 
                 # right border
                 elif x == width-1:
-                    # self.create_image(OFFSET + x * 32, OFFSET + y * 32, image= self.photo025, tag='Terrain')
                     self.map[(x, y)] = self.photo025, 
 
                 # small lake
@@ -196,7 +169,6 @@ class GameView(tk.Canvas):
 
                 # middle
                 else:
-                    # self.create_image(OFFSET + x * 32, OFFSET + y * 32, image= self.photo024, tag='Terrain')
                     self.map[(x, y)] = self.photo024, 
                     if y == 4 and count % 15 == 0:
                         self.map[(x, y)] = self.photo024, self.misc0
@@ -228,11 +200,19 @@ class GameView(tk.Canvas):
         # Draws from top left to bottom right
         for x in range(30):
             for y in range(18):
+                # position in view
+                xcoord = OFFSET + x * 32
+                ycoord = OFFSET + y * 32
+
+                # positin in map dict
+                xmap = x + gridx - 14
+                ymap = y + gridy - 8
+
                 if len(self.map[(x + gridx - 14, y + gridy - 8)]) == 1:
-                    self.create_image(OFFSET + x * 32, OFFSET + y * 32, image= self.map[(x + gridx - 14, y + gridy - 8)][0], tag='Terrain')
+                    self.create_image(xcoord, ycoord, image= self.map[(xmap, ymap)][0], tag='Terrain')
                 else:
-                    self.create_image(OFFSET + x * 32, OFFSET + y * 32, image= self.map[(x + gridx - 14, y + gridy - 8)][0], tag='Terrain')
-                    self.create_image(OFFSET + x * 32, OFFSET + y * 32, image= self.map[(x + gridx - 14, y + gridy - 8)][1], tag='Terrain')
+                    self.create_image(xcoord, ycoord, image= self.map[(xmap, ymap)][0], tag='Terrain')
+                    self.create_image(xcoord, ycoord, image= self.map[(xmap, ymap)][1], tag='Terrain')
     
     def update_frames(self, direction):
         if direction == "Up":
@@ -343,10 +323,3 @@ class GameView(tk.Canvas):
                 self.create_image(centrex, centrey, image=self.up7, tag='Player')
             elif self.up == 8:
                 self.create_image(centrex, centrey, image=self.up8, tag='Player')
-
-    def draw_level(self, level):
-        """
-        Draws all obstacles in level onto canvas.
-        :param level: Current level player is on.
-        """
-        pass
