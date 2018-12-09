@@ -72,6 +72,19 @@ class GameView(tk.Canvas):
         self.right7 = tk.PhotoImage(file="TileVenture/images/spritesheet/character/character_34.png")
         self.right8 = tk.PhotoImage(file="TileVenture/images/spritesheet/character/character_35.png")
 
+        # Misc
+        self.lake0 = tk.PhotoImage(file="TileVenture/images/spritesheet/terrain/terrain_416.png")
+        self.lake1 = tk.PhotoImage(file="TileVenture/images/spritesheet/terrain/terrain_417.png")
+        self.lake2 = tk.PhotoImage(file="TileVenture/images/spritesheet/terrain/terrain_418.png")
+        self.lake3 = tk.PhotoImage(file="TileVenture/images/spritesheet/terrain/terrain_436.png")
+        self.lake4 = tk.PhotoImage(file="TileVenture/images/spritesheet/terrain/terrain_392.png")
+        self.lake5 = tk.PhotoImage(file="TileVenture/images/spritesheet/terrain/terrain_435.png")
+        self.lake6 = tk.PhotoImage(file="TileVenture/images/spritesheet/terrain/terrain_437.png")
+        self.lake7 = tk.PhotoImage(file="TileVenture/images/spritesheet/terrain/terrain_438.png")
+        self.lake8 = tk.PhotoImage(file="TileVenture/images/spritesheet/terrain/terrain_439.png")
+
+        self.misc0 = tk.PhotoImage(file="TileVenture/images/spritesheet/terrain/terrain_159.png")
+
         # Frames
         self.up = 0
         self.down = 0
@@ -108,57 +121,87 @@ class GameView(tk.Canvas):
         grid_pos = self.translator.grid_to_coords_corner(grid)
         self.create_rectangle(0.5+grid_pos[0], 0.5+grid_pos[1], grid_pos[0]+58.5, grid_pos[1]+58.5)
     
+    """
+    EVERYTHING IN THIS FUNCTION IS HARDCODED :(
+    """
+
     def generate_map(self):
         # L: 1
         width = GRID_SIZE[0] + 500
         height = GRID_SIZE[1] + 500
+        count = 0
         for x in range(width):
             for y in range(height):
                 # top left
                 if x == 0 and y == 0:
                     # self.create_image(OFFSET + x * 32, OFFSET + y * 32, image= self.photo000, tag='Terrain')
-                    self.map[(x, y)] = self.photo000
+                    self.map[(x, y)] = (self.photo000, )
 
                 # top right
                 elif x == width-1 and y == 0:
                     # self.create_image(OFFSET + x * 32, OFFSET + y * 32, image= self.photo002, tag='Terrain')
-                    self.map[(x, y)] = self.photo002
+                    self.map[(x, y)] = (self.photo002, )
 
                 # bottom left
                 elif x == 0 and y == height-1:
                     # self.create_image(OFFSET + x * 32, OFFSET + y * 32, image= self.photo046, tag='Terrain')
-                    self.map[(x, y)] = self.photo046
+                    self.map[(x, y)] = (self.photo046, )
 
                 # bottom right
                 elif x == width-1 and y == height-1:
                     # self.create_image(OFFSET + x * 32, OFFSET + y * 32, image= self.photo048, tag='Terrain')
-                    self.map[(x, y)] = self.photo048
+                    self.map[(x, y)] = (self.photo048, )
                 
                 # top border
 
                 elif y == 0:
                     # self.create_image(OFFSET + x * 32, OFFSET + y * 32, image= self.photo001, tag='Terrain')
-                    self.map[(x, y)] = self.photo001
+                    self.map[(x, y)] = (self.photo001, )
 
                 # bottom border
                 elif y == height-1:
                     # self.create_image(OFFSET + x * 32, OFFSET + y * 32, image= self.photo047, tag='Terrain')
-                    self.map[(x, y)] = self.photo047
+                    self.map[(x, y)] = (self.photo047, )
 
                 # left border
                 elif x == 0:
                     # self.create_image(OFFSET + x * 32, OFFSET + y * 32, image= self.photo023, tag='Terrain')
-                    self.map[(x, y)] = self.photo023
+                    self.map[(x, y)] = (self.photo023, )
 
                 # right border
                 elif x == width-1:
                     # self.create_image(OFFSET + x * 32, OFFSET + y * 32, image= self.photo025, tag='Terrain')
-                    self.map[(x, y)] = self.photo025
+                    self.map[(x, y)] = (self.photo025, )
+
+                # small lake
+                elif (x >= 26 and x <= 28) and (y >= 14 and y <= 16):
+                    if x == 26 and y == 14:
+                        self.map[(x, y)] = (self.lake0, )
+                    elif x == 27 and y == 14:
+                        self.map[(x, y)] = (self.lake1, )
+                    elif x == 28 and y == 14:
+                        self.map[(x, y)] = (self.lake2, )
+                    elif x == 26 and y == 15:
+                        self.map[(x, y)] = (self.lake3, )
+                    elif x == 27 and y == 15:
+                        self.map[(x, y)] = (self.lake4, )
+                    elif x == 28 and y == 15:
+                        self.map[(x, y)] = (self.lake5, )
+                    elif x == 26 and y == 16:
+                        self.map[(x, y)] = (self.lake6, )
+                    elif x == 27 and y == 16:
+                        self.map[(x, y)] = (self.lake7, )
+                    elif x == 28 and y == 16:
+                        self.map[(x, y)] = (self.lake8, )
 
                 # middle
                 else:
                     # self.create_image(OFFSET + x * 32, OFFSET + y * 32, image= self.photo024, tag='Terrain')
-                    self.map[(x, y)] = self.photo024
+                    self.map[(x, y)] = (self.photo024, )
+                    if y == 4 and count % 15 == 0:
+                        self.map[(x, y)] = (self.photo024, self.misc0)
+                    count += 1
+                    
 
         # self.create_image(16, 16, image= self.photo000, tag='Terrain')
         # self.create_image(48, 16, image= self.photo001, tag='Terrain')
@@ -185,7 +228,11 @@ class GameView(tk.Canvas):
         # Draws from top left to bottom right
         for x in range(30):
             for y in range(18):
-                self.create_image(OFFSET + x * 32, OFFSET + y * 32, image= self.map[(x + gridx - 14, y + gridy - 8)], tag='Terrain')
+                if len(self.map[(x + gridx - 14, y + gridy - 8)]) == 1:
+                    self.create_image(OFFSET + x * 32, OFFSET + y * 32, image= self.map[(x + gridx - 14, y + gridy - 8)][0], tag='Terrain')
+                else:
+                    self.create_image(OFFSET + x * 32, OFFSET + y * 32, image= self.map[(x + gridx - 14, y + gridy - 8)][0], tag='Terrain')
+                    self.create_image(OFFSET + x * 32, OFFSET + y * 32, image= self.map[(x + gridx - 14, y + gridy - 8)][1], tag='Terrain')
     
     def update_frames(self, direction):
         if direction == "Up":
