@@ -29,10 +29,37 @@ class GameView(tk.Canvas):
 
         # Load character models:
         # 00 - 08 : Up
+        self.up0 = tk.PhotoImage(file="TileVenture/images/spritesheet/character/character_00.png")
+        self.up1 = tk.PhotoImage(file="TileVenture/images/spritesheet/character/character_01.png")
+        self.up2 = tk.PhotoImage(file="TileVenture/images/spritesheet/character/character_02.png")
+        self.up3 = tk.PhotoImage(file="TileVenture/images/spritesheet/character/character_03.png")
+        self.up4 = tk.PhotoImage(file="TileVenture/images/spritesheet/character/character_04.png")
+        self.up5 = tk.PhotoImage(file="TileVenture/images/spritesheet/character/character_05.png")
+        self.up6 = tk.PhotoImage(file="TileVenture/images/spritesheet/character/character_06.png")
+        self.up7 = tk.PhotoImage(file="TileVenture/images/spritesheet/character/character_07.png")
+        self.up8 = tk.PhotoImage(file="TileVenture/images/spritesheet/character/character_08.png")
 
         # 09 - 17 : Left
+        self.left0 = tk.PhotoImage(file="TileVenture/images/spritesheet/character/character_09.png")
+        self.left1 = tk.PhotoImage(file="TileVenture/images/spritesheet/character/character_10.png")
+        self.left2 = tk.PhotoImage(file="TileVenture/images/spritesheet/character/character_11.png")
+        self.left3 = tk.PhotoImage(file="TileVenture/images/spritesheet/character/character_12.png")
+        self.left4 = tk.PhotoImage(file="TileVenture/images/spritesheet/character/character_13.png")
+        self.left5 = tk.PhotoImage(file="TileVenture/images/spritesheet/character/character_14.png")
+        self.left6 = tk.PhotoImage(file="TileVenture/images/spritesheet/character/character_15.png")
+        self.left7 = tk.PhotoImage(file="TileVenture/images/spritesheet/character/character_16.png")
+        self.left8 = tk.PhotoImage(file="TileVenture/images/spritesheet/character/character_17.png")
 
         # 18 - 26 : Down
+        self.down0 = tk.PhotoImage(file="TileVenture/images/spritesheet/character/character_18.png")
+        self.down1 = tk.PhotoImage(file="TileVenture/images/spritesheet/character/character_19.png")
+        self.down2 = tk.PhotoImage(file="TileVenture/images/spritesheet/character/character_20.png")
+        self.down3 = tk.PhotoImage(file="TileVenture/images/spritesheet/character/character_21.png")
+        self.down4 = tk.PhotoImage(file="TileVenture/images/spritesheet/character/character_22.png")
+        self.down5 = tk.PhotoImage(file="TileVenture/images/spritesheet/character/character_23.png")
+        self.down6 = tk.PhotoImage(file="TileVenture/images/spritesheet/character/character_24.png")
+        self.down7 = tk.PhotoImage(file="TileVenture/images/spritesheet/character/character_25.png")
+        self.down8 = tk.PhotoImage(file="TileVenture/images/spritesheet/character/character_26.png")
 
         # 27 - 35 : Right
         self.right0 = tk.PhotoImage(file="TileVenture/images/spritesheet/character/character_27.png")
@@ -162,17 +189,17 @@ class GameView(tk.Canvas):
     
     def update_frames(self, direction):
         if direction == "Up":
-            self.up += 1
+            self.up = (self.up + 1) % 9
             self.down = 0
             self.left = 0
             self.right = 0
         elif direction == "Down":
-            self.down += 1
+            self.down = (self.down + 1) % 9
             self.up = 0
             self.left = 0
             self.right = 0
         elif direction == "Left":
-            self.left += 1
+            self.left = (self.left + 1) % 9
             self.up = 0
             self.down = 0
             self.right = 0
@@ -213,11 +240,62 @@ class GameView(tk.Canvas):
             elif self.right == 8:
                 self.create_image(centrex, centrey, image=self.right8, tag='Player')
         elif direction == 'Down':
-            self.create_image(centrex, centrey, image=self.photo1, tag='Player')
+            if self.down == 0:
+                self.create_image(centrex, centrey, image=self.down0, tag='Player')
+            elif self.down == 1:
+                self.create_image(centrex, centrey, image=self.down1, tag='Player')
+            elif self.down == 2:
+                self.create_image(centrex, centrey, image=self.down2, tag='Player')
+            elif self.down == 3:
+                self.create_image(centrex, centrey, image=self.down3, tag='Player')
+            elif self.down == 4:
+                self.create_image(centrex, centrey, image=self.down4, tag='Player')
+            elif self.down == 5:
+                self.create_image(centrex, centrey, image=self.down5, tag='Player')
+            elif self.down == 6:
+                self.create_image(centrex, centrey, image=self.down6, tag='Player')
+            elif self.down == 7:
+                self.create_image(centrex, centrey, image=self.down7, tag='Player')
+            elif self.down == 8:
+                self.create_image(centrex, centrey, image=self.down8, tag='Player')
         elif direction == 'Left':
-            self.create_image(centrex, centrey, image=self.photo2, tag='Player')
+            if self.left == 0:
+                self.create_image(centrex, centrey, image=self.left0, tag='Player')
+            elif self.left == 1:
+                self.create_image(centrex, centrey, image=self.left1, tag='Player')
+            elif self.left == 2:
+                self.create_image(centrex, centrey, image=self.left2, tag='Player')
+            elif self.left == 3:
+                self.create_image(centrex, centrey, image=self.left3, tag='Player')
+            elif self.left == 4:
+                self.create_image(centrex, centrey, image=self.left4, tag='Player')
+            elif self.left == 5:
+                self.create_image(centrex, centrey, image=self.left5, tag='Player')
+            elif self.left == 6:
+                self.create_image(centrex, centrey, image=self.left6, tag='Player')
+            elif self.left == 7:
+                self.create_image(centrex, centrey, image=self.left7, tag='Player')
+            elif self.left == 8:
+                self.create_image(centrex, centrey, image=self.left8, tag='Player')
         else:
-            self.create_image(centrex, centrey, image=self.photo3, tag='Player')
+            if self.up == 0:
+                self.create_image(centrex, centrey, image=self.up0, tag='Player')
+            elif self.up == 1:
+                self.create_image(centrex, centrey, image=self.up1, tag='Player')
+            elif self.up == 2:
+                self.create_image(centrex, centrey, image=self.up2, tag='Player')
+            elif self.up == 3:
+                self.create_image(centrex, centrey, image=self.up3, tag='Player')
+            elif self.up == 4:
+                self.create_image(centrex, centrey, image=self.up4, tag='Player')
+            elif self.up == 5:
+                self.create_image(centrex, centrey, image=self.up5, tag='Player')
+            elif self.up == 6:
+                self.create_image(centrex, centrey, image=self.up6, tag='Player')
+            elif self.up == 7:
+                self.create_image(centrex, centrey, image=self.up7, tag='Player')
+            elif self.up == 8:
+                self.create_image(centrex, centrey, image=self.up8, tag='Player')
 
     def draw_level(self, level):
         """
