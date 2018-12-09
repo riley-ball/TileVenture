@@ -97,10 +97,6 @@ class GameView(tk.Canvas):
     
     def get_map(self):
         return self.map
-    
-    """
-    EVERYTHING IN THIS FUNCTION IS HARDCODED :(
-    """
 
     def generate_map(self):
         # L: 1
@@ -169,29 +165,13 @@ class GameView(tk.Canvas):
                     if y == 4 and count % 15 == 0:
                         self.map[(x, y)] = self.photo024, self.misc0
                     count += 1
-                    
-
-        # self.create_image(16, 16, image= self.photo000, tag='Terrain')
-        # self.create_image(48, 16, image= self.photo001, tag='Terrain')
-        # self.create_image(80, 16, image= self.photo002, tag='Terrain')
-
-        # # L: 2
-        # self.create_image(16, 48, image= self.photo023, tag='Terrain')
-        # self.create_image(48, 48, image= self.photo024, tag='Terrain')
-        # self.create_image(80, 48, image= self.photo025, tag='Terrain')
-
-        # # L: 3
-        # self.create_image(16, 80, image= self.photo046, tag='Terrain')
-        # self.create_image(48, 80, image= self.photo047, tag='Terrain')
-        # self.create_image(80, 80, image= self.photo048, tag='Terrain')
 
     def draw_terrain(self, grid):
         self.delete('Terrain')
         
+        # Player grid positions
         gridx = grid[0]
         gridy = grid[1]
-
-        # Frames
 
         # Draws from top left to bottom right
         for x in range(30):
