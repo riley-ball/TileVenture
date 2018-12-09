@@ -36,16 +36,15 @@ class GameApp(object):
         # view.bind("<Right>", self._move_right)
 
     def _setup_game(self):
+        self._view.draw_grass()
         self._player_grid_pos = (7, 4)
         self._player_direction = 'Down'
-        self.flag = False
 
     def colour_tile(self):
         self._view.draw_tiles(self._player_grid_pos)
 
     def refresh_view(self):
-        if self.flag:
-            self.colour_tile()
+        self._view.draw_terrain(self._player_grid_pos)
         self._view.draw_player(self._player_grid_pos, self._player_direction)
 
     def _key_press(self, event):
@@ -76,7 +75,7 @@ class GameApp(object):
 
 def main():
     root = tk.Tk()
-    root.geometry("900x540")
+    root.geometry("928x544")
     game = GameApp(root)
     root.lift()
     root.attributes('-topmost', True)

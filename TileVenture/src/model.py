@@ -1,8 +1,8 @@
 from typing import Tuple, List
 
-CELL_SIZE = 60
+CELL_SIZE = 32
 PIXEL_SIZE = (24, 12)
-GRID_SIZE = (15, 9)
+GRID_SIZE = (29, 17)
 
 
 class GridCoordinateTranslator:
