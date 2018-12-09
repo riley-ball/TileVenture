@@ -58,33 +58,32 @@ class GameApp(object):
             if check_coords in self._view.get_map():
                 self._player_grid_pos = new_coords
                 self._player_direction = 'Up'
-                self.refresh_view()
+                self._view.update_frames(self._player_direction)
 
         elif key == "Down":
             new_coords = (self._player_grid_pos[0], self._player_grid_pos[1]+1)
-            check_coords = (self._player_grid_pos[0], self._player_grid_pos[1]+9)
+            check_coords = (self._player_grid_pos[0], self._player_grid_pos[1]+10)
             if check_coords in self._view.get_map():
                 self._player_grid_pos = new_coords
-                print(self._player_grid_pos)
                 self._player_direction = 'Down'
-                self.refresh_view()
+                self._view.update_frames(self._player_direction)
 
         elif key == "Left":
             new_coords = (self._player_grid_pos[0]-1, self._player_grid_pos[1])
             check_coords = (self._player_grid_pos[0]-15, self._player_grid_pos[1])
             if check_coords in self._view.get_map():
-                print("aaaaaaaaaa")
                 self._player_grid_pos = new_coords
                 self._player_direction = 'Left'
-                self.refresh_view()
+                self._view.update_frames(self._player_direction)
 
         elif key == "Right":
             new_coords = (self._player_grid_pos[0]+1, self._player_grid_pos[1])
-            check_coords = (self._player_grid_pos[0]+15, self._player_grid_pos[1])
+            check_coords = (self._player_grid_pos[0]+16, self._player_grid_pos[1])
             if check_coords in self._view.get_map():
                 self._player_grid_pos = new_coords
                 self._player_direction = 'Right'
-                self.refresh_view()
+                self._view.update_frames(self._player_direction)
+        self.refresh_view()
 
 def main():
     root = tk.Tk()

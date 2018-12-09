@@ -27,6 +27,22 @@ class GameView(tk.Canvas):
         self.photo047 = tk.PhotoImage(file="TileVenture/images/spritesheet/terrain/terrain_047.png")
         self.photo048 = tk.PhotoImage(file="TileVenture/images/spritesheet/terrain/terrain_048.png")
 
+        # Load character models:
+        # 00 - 08 : Up
+
+        # 09 - 17 : Left
+
+        # 18 - 26 : Down
+
+        # 27 - 35 : Right
+
+
+        # Frames
+        self.up = 0
+        self.down = 0
+        self.left = 0
+        self.right = 0
+
         self.map = {}
 
         self.width, self.height = width, height = tuple(i * self.cell_size
@@ -59,8 +75,8 @@ class GameView(tk.Canvas):
     
     def generate_map(self):
         # L: 1
-        width = GRID_SIZE[0] + 1
-        height = GRID_SIZE[1] + 1
+        width = GRID_SIZE[0] + 10
+        height = GRID_SIZE[1] + 10
         for x in range(width):
             for y in range(height):
                 # top left
@@ -125,22 +141,50 @@ class GameView(tk.Canvas):
 
     def draw_terrain(self, grid):
         self.delete('Terrain')
+        
         gridx = grid[0]
         gridy = grid[1]
+
+        # Frames
+
         # Draws from top left to bottom right
         for x in range(30):
             for y in range(18):
                 self.create_image(OFFSET + x * 32, OFFSET + y * 32, image= self.map[(x + gridx - 14, y + gridy - 8)], tag='Terrain')
- 
+    
+    def update_frames(self, direction):
+        if direction == "Up":
+            self.up += 1
+            self.down = 0
+            self.left = 0
+            self.right = 0
+        elif direction == "Down":
+            self.down += 1
+            self.up = 0
+            self.left = 0
+            self.right = 0
+        elif direction == "Left":
+            self.left += 1
+            self.up = 0
+            self.down = 0
+            self.right = 0
+        elif direction == "Right":
+            self.right += 1
+            self.up = 0
+            self.left = 0
+            self.down = 0
+    
     def draw_player(self, direction):
         """
         Draws player onto canvas.
         :param grid: Grid coordinates (0, 0) --> (14, 8).
         :param direction: Direction player model is facing (Up, Down, Left, Right).
         """
+        self.delete('Player')
+
         centrex = OFFSET+14*32
         centrey = OFFSET+8*32
-        self.delete('Player')
+
         if direction == 'Right':
             self.create_image(centrex, centrey, image=self.photo, tag='Player')
         elif direction == 'Down':
