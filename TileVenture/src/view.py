@@ -35,7 +35,15 @@ class GameView(tk.Canvas):
         # 18 - 26 : Down
 
         # 27 - 35 : Right
-
+        self.right0 = tk.PhotoImage(file="TileVenture/images/spritesheet/character/character_27.png")
+        self.right1 = tk.PhotoImage(file="TileVenture/images/spritesheet/character/character_28.png")
+        self.right2 = tk.PhotoImage(file="TileVenture/images/spritesheet/character/character_29.png")
+        self.right3 = tk.PhotoImage(file="TileVenture/images/spritesheet/character/character_30.png")
+        self.right4 = tk.PhotoImage(file="TileVenture/images/spritesheet/character/character_31.png")
+        self.right5 = tk.PhotoImage(file="TileVenture/images/spritesheet/character/character_32.png")
+        self.right6 = tk.PhotoImage(file="TileVenture/images/spritesheet/character/character_33.png")
+        self.right7 = tk.PhotoImage(file="TileVenture/images/spritesheet/character/character_34.png")
+        self.right8 = tk.PhotoImage(file="TileVenture/images/spritesheet/character/character_35.png")
 
         # Frames
         self.up = 0
@@ -75,8 +83,8 @@ class GameView(tk.Canvas):
     
     def generate_map(self):
         # L: 1
-        width = GRID_SIZE[0] + 10
-        height = GRID_SIZE[1] + 10
+        width = GRID_SIZE[0] + 500
+        height = GRID_SIZE[1] + 500
         for x in range(width):
             for y in range(height):
                 # top left
@@ -169,7 +177,7 @@ class GameView(tk.Canvas):
             self.down = 0
             self.right = 0
         elif direction == "Right":
-            self.right += 1
+            self.right = (self.right + 1) % 9
             self.up = 0
             self.left = 0
             self.down = 0
@@ -186,7 +194,24 @@ class GameView(tk.Canvas):
         centrey = OFFSET+8*32
 
         if direction == 'Right':
-            self.create_image(centrex, centrey, image=self.photo, tag='Player')
+            if self.right == 0:
+                self.create_image(centrex, centrey, image=self.right0, tag='Player')
+            elif self.right == 1:
+                self.create_image(centrex, centrey, image=self.right1, tag='Player')
+            elif self.right == 2:
+                self.create_image(centrex, centrey, image=self.right2, tag='Player')
+            elif self.right == 3:
+                self.create_image(centrex, centrey, image=self.right3, tag='Player')
+            elif self.right == 4:
+                self.create_image(centrex, centrey, image=self.right4, tag='Player')
+            elif self.right == 5:
+                self.create_image(centrex, centrey, image=self.right5, tag='Player')
+            elif self.right == 6:
+                self.create_image(centrex, centrey, image=self.right6, tag='Player')
+            elif self.right == 7:
+                self.create_image(centrex, centrey, image=self.right7, tag='Player')
+            elif self.right == 8:
+                self.create_image(centrex, centrey, image=self.right8, tag='Player')
         elif direction == 'Down':
             self.create_image(centrex, centrey, image=self.photo1, tag='Player')
         elif direction == 'Left':
