@@ -24,48 +24,48 @@ class GameView(tk.Canvas):
 
         # Load character models:
         # 00 - 08 : Up
-        self.up0 = tk.PhotoImage(file="images/character/character_00.png")
-        self.up1 = tk.PhotoImage(file="images/character/character_01.png")
-        self.up2 = tk.PhotoImage(file="images/character/character_02.png")
-        self.up3 = tk.PhotoImage(file="images/character/character_03.png")
-        self.up4 = tk.PhotoImage(file="images/character/character_04.png")
-        self.up5 = tk.PhotoImage(file="images/character/character_05.png")
-        self.up6 = tk.PhotoImage(file="images/character/character_06.png")
-        self.up7 = tk.PhotoImage(file="images/character/character_07.png")
-        self.up8 = tk.PhotoImage(file="images/character/character_08.png")
+        self.up_frame = [tk.PhotoImage(file="images/character/character_00.png"),
+        tk.PhotoImage(file="images/character/character_01.png"), 
+        tk.PhotoImage(file="images/character/character_02.png"), 
+        tk.PhotoImage(file="images/character/character_03.png"), 
+        tk.PhotoImage(file="images/character/character_04.png"), 
+        tk.PhotoImage(file="images/character/character_05.png"), 
+        tk.PhotoImage(file="images/character/character_06.png"), 
+        tk.PhotoImage(file="images/character/character_07.png"), 
+        tk.PhotoImage(file="images/character/character_08.png")]
 
         # 09 - 17 : Left
-        self.left0 = tk.PhotoImage(file="images/character/character_09.png")
-        self.left1 = tk.PhotoImage(file="images/character/character_10.png")
-        self.left2 = tk.PhotoImage(file="images/character/character_11.png")
-        self.left3 = tk.PhotoImage(file="images/character/character_12.png")
-        self.left4 = tk.PhotoImage(file="images/character/character_13.png")
-        self.left5 = tk.PhotoImage(file="images/character/character_14.png")
-        self.left6 = tk.PhotoImage(file="images/character/character_15.png")
-        self.left7 = tk.PhotoImage(file="images/character/character_16.png")
-        self.left8 = tk.PhotoImage(file="images/character/character_17.png")
+        self.left_frame = [tk.PhotoImage(file="images/character/character_09.png"),
+        tk.PhotoImage(file="images/character/character_10.png"),
+        tk.PhotoImage(file="images/character/character_11.png"),
+        tk.PhotoImage(file="images/character/character_12.png"),
+        tk.PhotoImage(file="images/character/character_13.png"),
+        tk.PhotoImage(file="images/character/character_14.png"),
+        tk.PhotoImage(file="images/character/character_15.png"),
+        tk.PhotoImage(file="images/character/character_16.png"),
+        tk.PhotoImage(file="images/character/character_17.png")]
 
         # 18 - 26 : Down
-        self.down0 = tk.PhotoImage(file="images/character/character_18.png")
-        self.down1 = tk.PhotoImage(file="images/character/character_19.png")
-        self.down2 = tk.PhotoImage(file="images/character/character_20.png")
-        self.down3 = tk.PhotoImage(file="images/character/character_21.png")
-        self.down4 = tk.PhotoImage(file="images/character/character_22.png")
-        self.down5 = tk.PhotoImage(file="images/character/character_23.png")
-        self.down6 = tk.PhotoImage(file="images/character/character_24.png")
-        self.down7 = tk.PhotoImage(file="images/character/character_25.png")
-        self.down8 = tk.PhotoImage(file="images/character/character_26.png")
+        self.down_frame = [tk.PhotoImage(file="images/character/character_18.png"),
+        tk.PhotoImage(file="images/character/character_19.png"),
+        tk.PhotoImage(file="images/character/character_20.png"),
+        tk.PhotoImage(file="images/character/character_21.png"),
+        tk.PhotoImage(file="images/character/character_22.png"),
+        tk.PhotoImage(file="images/character/character_23.png"),
+        tk.PhotoImage(file="images/character/character_24.png"),
+        tk.PhotoImage(file="images/character/character_25.png"),
+        tk.PhotoImage(file="images/character/character_26.png")]
 
         # 27 - 35 : Right
-        self.right0 = tk.PhotoImage(file="images/character/character_27.png")
-        self.right1 = tk.PhotoImage(file="images/character/character_28.png")
-        self.right2 = tk.PhotoImage(file="images/character/character_29.png")
-        self.right3 = tk.PhotoImage(file="images/character/character_30.png")
-        self.right4 = tk.PhotoImage(file="images/character/character_31.png")
-        self.right5 = tk.PhotoImage(file="images/character/character_32.png")
-        self.right6 = tk.PhotoImage(file="images/character/character_33.png")
-        self.right7 = tk.PhotoImage(file="images/character/character_34.png")
-        self.right8 = tk.PhotoImage(file="images/character/character_35.png")
+        self.right_frame = [tk.PhotoImage(file="images/character/character_27.png"),
+        tk.PhotoImage(file="images/character/character_28.png"),
+        tk.PhotoImage(file="images/character/character_29.png"),
+        tk.PhotoImage(file="images/character/character_30.png"),
+        tk.PhotoImage(file="images/character/character_31.png"),
+        tk.PhotoImage(file="images/character/character_32.png"),
+        tk.PhotoImage(file="images/character/character_33.png"),
+        tk.PhotoImage(file="images/character/character_34.png"),
+        tk.PhotoImage(file="images/character/character_35.png")]
 
         # Misc
         self.lake0 = tk.PhotoImage(file="images/terrain/terrain_416.png")
@@ -244,78 +244,10 @@ class GameView(tk.Canvas):
         centrey = OFFSET+8*32
 
         if direction == 'Right':
-            if self.right == 0:
-                self.create_image(centrex, centrey, image=self.right0, tag='Player')
-            elif self.right == 1:
-                self.create_image(centrex, centrey, image=self.right1, tag='Player')
-            elif self.right == 2:
-                self.create_image(centrex, centrey, image=self.right2, tag='Player')
-            elif self.right == 3:
-                self.create_image(centrex, centrey, image=self.right3, tag='Player')
-            elif self.right == 4:
-                self.create_image(centrex, centrey, image=self.right4, tag='Player')
-            elif self.right == 5:
-                self.create_image(centrex, centrey, image=self.right5, tag='Player')
-            elif self.right == 6:
-                self.create_image(centrex, centrey, image=self.right6, tag='Player')
-            elif self.right == 7:
-                self.create_image(centrex, centrey, image=self.right7, tag='Player')
-            elif self.right == 8:
-                self.create_image(centrex, centrey, image=self.right8, tag='Player')
+            self.create_image(centrex, centrey, image=self.right_frame[self.right], tag='Player')
         elif direction == 'Down':
-            if self.down == 0:
-                self.create_image(centrex, centrey, image=self.down0, tag='Player')
-            elif self.down == 1:
-                self.create_image(centrex, centrey, image=self.down1, tag='Player')
-            elif self.down == 2:
-                self.create_image(centrex, centrey, image=self.down2, tag='Player')
-            elif self.down == 3:
-                self.create_image(centrex, centrey, image=self.down3, tag='Player')
-            elif self.down == 4:
-                self.create_image(centrex, centrey, image=self.down4, tag='Player')
-            elif self.down == 5:
-                self.create_image(centrex, centrey, image=self.down5, tag='Player')
-            elif self.down == 6:
-                self.create_image(centrex, centrey, image=self.down6, tag='Player')
-            elif self.down == 7:
-                self.create_image(centrex, centrey, image=self.down7, tag='Player')
-            elif self.down == 8:
-                self.create_image(centrex, centrey, image=self.down8, tag='Player')
+            self.create_image(centrex, centrey, image=self.down_frame[self.down], tag='Player')
         elif direction == 'Left':
-            if self.left == 0:
-                self.create_image(centrex, centrey, image=self.left0, tag='Player')
-            elif self.left == 1:
-                self.create_image(centrex, centrey, image=self.left1, tag='Player')
-            elif self.left == 2:
-                self.create_image(centrex, centrey, image=self.left2, tag='Player')
-            elif self.left == 3:
-                self.create_image(centrex, centrey, image=self.left3, tag='Player')
-            elif self.left == 4:
-                self.create_image(centrex, centrey, image=self.left4, tag='Player')
-            elif self.left == 5:
-                self.create_image(centrex, centrey, image=self.left5, tag='Player')
-            elif self.left == 6:
-                self.create_image(centrex, centrey, image=self.left6, tag='Player')
-            elif self.left == 7:
-                self.create_image(centrex, centrey, image=self.left7, tag='Player')
-            elif self.left == 8:
-                self.create_image(centrex, centrey, image=self.left8, tag='Player')
+            self.create_image(centrex, centrey, image=self.left_frame[self.left], tag='Player')
         else:
-            if self.up == 0:
-                self.create_image(centrex, centrey, image=self.up0, tag='Player')
-            elif self.up == 1:
-                self.create_image(centrex, centrey, image=self.up1, tag='Player')
-            elif self.up == 2:
-                self.create_image(centrex, centrey, image=self.up2, tag='Player')
-            elif self.up == 3:
-                self.create_image(centrex, centrey, image=self.up3, tag='Player')
-            elif self.up == 4:
-                self.create_image(centrex, centrey, image=self.up4, tag='Player')
-            elif self.up == 5:
-                self.create_image(centrex, centrey, image=self.up5, tag='Player')
-            elif self.up == 6:
-                self.create_image(centrex, centrey, image=self.up6, tag='Player')
-            elif self.up == 7:
-                self.create_image(centrex, centrey, image=self.up7, tag='Player')
-            elif self.up == 8:
-                self.create_image(centrex, centrey, image=self.up8, tag='Player')
+            self.create_image(centrex, centrey, image=self.up_frame[self.up], tag='Player')
