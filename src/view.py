@@ -12,10 +12,6 @@ class GameView(tk.Canvas):
 
         self.size = size
         self.cell_size = cell_size
-        self.photo = tk.PhotoImage(file="images/character/character_27.png")
-        self.photo1 = tk.PhotoImage(file="images/character/character_19.png")
-        self.photo2 = tk.PhotoImage(file="images/character/character_09.png")
-        self.photo3 = tk.PhotoImage(file="images/character/character_01.png")
         self.photo000 = tk.PhotoImage(file="images/terrain/terrain_000.png")
         self.photo001 = tk.PhotoImage(file="images/terrain/terrain_001.png")
         self.photo002 = tk.PhotoImage(file="images/terrain/terrain_002.png")
