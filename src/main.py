@@ -1,6 +1,6 @@
 import tkinter as tk
 
-from model import GameModel
+from model import GameModel, MAP_SIZE, START_POS
 from view import GameView
 
 
@@ -25,62 +25,57 @@ class GameApp(object):
                                      bg='#1F1F1F')
         view.pack()
 
-
         self._setup_game()
-        self.refresh_view()
+        self.refresh_view(5)
 
         view.bind_all("<Key>", self._key_press)
-        # view.bind("<Down>", self._move_down)
-        # view.bind("<Left>", self._move_left)
-        # view.bind("<Right>", self._move_right)
 
     def _setup_game(self):
         self._view.generate_map()
-        self._player_grid_pos = (14, 8)
+        self._player_grid_pos = START_POS
         self._player_direction = 'Down'
 
-    def refresh_view(self):
-        self._view.draw_terrain(self._player_grid_pos)
-        self._view.draw_player(self._player_direction)
+    def refresh_view(self, draw_flag):
+        self._view.draw_terrain(self._player_grid_pos, draw_flag)
+        self._view.draw_player(self._player_grid_pos,
+                               self._player_direction, draw_flag)
 
     def _key_press(self, event):
         key = event.keysym
 
-        # TODO change how the view is refreshed (center around character)
-
         if key == "Up":
             new_coords = (self._player_grid_pos[0], self._player_grid_pos[1]-1)
-            check_coords = (self._player_grid_pos[0], self._player_grid_pos[1]-9)
-            # if new_coords
-            if check_coords in self._view.get_map():
+            if self._player_grid_pos[1]-1 >= 0:
                 self._player_grid_pos = new_coords
                 self._player_direction = 'Up'
                 self._view.update_frames(self._player_direction)
+                self.refresh_view(self._view.out_of_bounds(new_coords))
 
         elif key == "Down":
             new_coords = (self._player_grid_pos[0], self._player_grid_pos[1]+1)
-            check_coords = (self._player_grid_pos[0], self._player_grid_pos[1]+10)
-            if check_coords in self._view.get_map():
+            if self._player_grid_pos[1]+1 <= MAP_SIZE-2:
                 self._player_grid_pos = new_coords
                 self._player_direction = 'Down'
                 self._view.update_frames(self._player_direction)
+                print(self._view.out_of_bounds(new_coords))
+                self.refresh_view(self._view.out_of_bounds(new_coords))
 
         elif key == "Left":
             new_coords = (self._player_grid_pos[0]-1, self._player_grid_pos[1])
-            check_coords = (self._player_grid_pos[0]-15, self._player_grid_pos[1])
-            if check_coords in self._view.get_map():
+            if self._player_grid_pos[0]-1 >= 0:
                 self._player_grid_pos = new_coords
                 self._player_direction = 'Left'
                 self._view.update_frames(self._player_direction)
+                self.refresh_view(self._view.out_of_bounds(new_coords))
 
         elif key == "Right":
             new_coords = (self._player_grid_pos[0]+1, self._player_grid_pos[1])
-            check_coords = (self._player_grid_pos[0]+16, self._player_grid_pos[1])
-            if check_coords in self._view.get_map():
+            if self._player_grid_pos[0]+1 < MAP_SIZE:
                 self._player_grid_pos = new_coords
                 self._player_direction = 'Right'
                 self._view.update_frames(self._player_direction)
-        self.refresh_view()
+                self.refresh_view(self._view.out_of_bounds(new_coords))
+
 
 def main():
     root = tk.Tk()
@@ -90,6 +85,7 @@ def main():
     root.attributes('-topmost', True)
     root.after_idle(root.attributes, '-topmost', False)
     root.mainloop()
+
 
 if __name__ == '__main__':
     main()

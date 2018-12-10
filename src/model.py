@@ -4,6 +4,7 @@ CELL_SIZE = 32
 PIXEL_SIZE = (24, 12)
 GRID_SIZE = (30, 18)
 MAP_SIZE = 100
+START_POS = (14, 8)
 
 
 class GridCoordinateTranslator:
@@ -106,6 +107,7 @@ class GridCoordinateTranslator:
         :return: pixel positions
         """
         return (grid[0]*60, grid[1]*60)
+
 
 class GameModel(object):
     def __init__(self, size=GRID_SIZE, cell_size=CELL_SIZE):
