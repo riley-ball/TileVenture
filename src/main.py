@@ -62,7 +62,7 @@ class GameApp(object):
             new_coords = (self._player_grid_pos[0], self._player_grid_pos[1]+1)
             check_coords = (
                 self._player_grid_pos[0], self._player_grid_pos[1]+10)
-            if self._player_grid_pos[1]+1 <= MAP_SIZE:
+            if self._player_grid_pos[1]+1 <= MAP_SIZE-2:
                 draw_flag = False
                 self._player_grid_pos = new_coords
                 self._player_direction = 'Down'

@@ -199,7 +199,7 @@ class GameView(tk.Canvas):
                     if y == 7 and count % 3 == 0:
                         self.map[(x, y)] = self.photo024, self.misc0
                     count1 += 1
-                    if y == 10 and count % 3 == 0:
+                    if y == 95 and count % 3 == 0:
                         self.map[(x, y)] = self.photo024, self.misc0
                     count2 += 1
 
@@ -212,7 +212,7 @@ class GameView(tk.Canvas):
             if grid[1] < MAP_SIZE/2:
                 gridy = 8
             else:
-                gridy = MAP_SIZE - 9
+                gridy = MAP_SIZE - 10
         elif draw_flag == 3:
             return
         elif draw_flag == 5:
@@ -297,18 +297,31 @@ class GameView(tk.Canvas):
                 self.create_image(centrex, centrey,
                                   image=self.up_frame[self.up], tag='Player')
         else:
-            if draw_flag == 1:
+            if draw_flag == 1 or draw_flag == 7:
                 currentx = OFFSET+pos[0]*32
-                currenty = OFFSET+pos[1]*32
+                if pos[1] < MAP_SIZE/2:
+                    currenty = OFFSET+pos[1]*32
+                else:
+                    currenty = OFFSET+(pos[1]-(MAP_SIZE-18))*32
 
-            elif draw_flag == 3:
+            # elif draw_flag == 3 or draw_flag ==:
+            #     currentx = OFFSET+(pos[0]-(MAP_SIZE-30))*32
+            #     currenty = OFFSET+pos[1]*32
+
+            elif draw_flag == 3 or draw_flag == 9:
                 # (pos[0]-(MAP_SIZE-30)) == 15
                 currentx = OFFSET+(pos[0]-(MAP_SIZE-30))*32
-                currenty = OFFSET+pos[1]*32
+                if pos[1] < MAP_SIZE/2:
+                    currenty = OFFSET+pos[1]*32
+                else:
+                    currenty = OFFSET+(pos[1]-(MAP_SIZE-18))*32
 
-            elif draw_flag == 2:
+            elif draw_flag == 2 or draw_flag == 8:
                 currentx = OFFSET+START_POS[0]*32
-                currenty = OFFSET+pos[1]*32
+                if pos[1] < MAP_SIZE/2:
+                    currenty = OFFSET+pos[1]*32
+                else:
+                    currenty = OFFSET+(pos[1]-(MAP_SIZE-18))*32
 
             elif draw_flag == 4 or draw_flag == 6:
                 currenty = OFFSET+START_POS[1]*32
@@ -360,11 +373,11 @@ class GameView(tk.Canvas):
             return 3
 
         # Cell 7
-        elif x <= 14 and y >= MAP_SIZE-9:
+        elif x < 14 and y > MAP_SIZE-10:
             return 7
 
         # Cell 9
-        elif x >= MAP_SIZE-16 and y >= MAP_SIZE-9:
+        elif x > MAP_SIZE-16 and y > MAP_SIZE-10:
             return 9
 
         # Cell 2
@@ -380,7 +393,7 @@ class GameView(tk.Canvas):
             return 6
 
         # Cell 8
-        elif y >= MAP_SIZE-9:
+        elif y > MAP_SIZE-10:
             return 8
 
         # Cell 5
