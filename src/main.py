@@ -16,6 +16,7 @@ class GameApp(object):
         master.title('Game')
 
         self._game = game = GameModel()
+        self._game_timer = 999
 
         canvas_frame = tk.Canvas(master)
         canvas_frame.pack(side=tk.LEFT)
@@ -28,9 +29,11 @@ class GameApp(object):
         self._setup_game()
         self.refresh_view(5)
 
-        view.bind_all("<Key>", self._key_press)
-        view.bind_all("<KeyPress>", self.keydown)
-        view.bind_all("<KeyRelease>", self.keyup)
+        self._current_event = None
+
+        # view.bind_all("<Key>", self._key_press)
+        view.bind_all("<KeyPress>", self._keydown)
+        view.bind_all("<KeyRelease>", self._keyup)
         self._key_flag = False
 
     def _setup_game(self):
@@ -43,19 +46,16 @@ class GameApp(object):
         self._view.draw_player(self._player_grid_pos,
                                self._player_direction, draw_flag)
 
-    def keyup(self, e):
-        self._key_flag = False
-        print('up', e.char, e.type)
+    def _keyup(self, event):
+        self._current_event = None
 
-    def keydown(self, e):
-        self._key_flag = True
-        self._key_press(e)
+    def _keydown(self, event):
+        self._current_event = event
 
-    def _key_press(self, event):
-        key = event.keysym
-        while self._key_flag:
+    def refresh_character(self):
+        if self._current_event != None:
+            key = self._current_event.keysym
             if key == "Up":
-                print(event.type,  "aaaaa")
                 new_coords = (
                     self._player_grid_pos[0], self._player_grid_pos[1]-1)
                 if self._player_grid_pos[1]-1 >= 0:
@@ -90,12 +90,14 @@ class GameApp(object):
                     self._player_direction = 'Right'
                     self._view.update_frames(self._player_direction)
                     self.refresh_view(self._view.out_of_bounds(new_coords))
+        self._master.after(50, self.refresh_character)
 
 
 def main():
     root = tk.Tk()
     root.geometry("960x576")
     game = GameApp(root)
+    game.refresh_character()
     root.lift()
     root.attributes('-topmost', True)
     root.after_idle(root.attributes, '-topmost', False)
