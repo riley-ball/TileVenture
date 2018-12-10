@@ -26,7 +26,7 @@ class GameApp(object):
         view.pack()
 
         self._setup_game()
-        self.refresh_view(True)
+        self.refresh_view(5)
 
         view.bind_all("<Key>", self._key_press)
         # view.bind("<Down>", self._move_down)
@@ -55,9 +55,8 @@ class GameApp(object):
                 self._player_grid_pos = new_coords
                 self._player_direction = 'Up'
                 self._view.update_frames(self._player_direction)
-                if check_coords in self._view.get_map() and not self._view.out_of_bounds(new_coords):
-                    draw_flag = True
-                self.refresh_view(draw_flag)
+                print(self._view.out_of_bounds(new_coords))
+                self.refresh_view(self._view.out_of_bounds(new_coords))
 
         elif key == "Down":
             new_coords = (self._player_grid_pos[0], self._player_grid_pos[1]+1)
@@ -68,9 +67,8 @@ class GameApp(object):
                 self._player_grid_pos = new_coords
                 self._player_direction = 'Down'
                 self._view.update_frames(self._player_direction)
-                if check_coords in self._view.get_map() and not self._view.out_of_bounds(new_coords):
-                    draw_flag = True
-                self.refresh_view(draw_flag)
+                print(self._view.out_of_bounds(new_coords))
+                self.refresh_view(self._view.out_of_bounds(new_coords))
 
         elif key == "Left":
             new_coords = (self._player_grid_pos[0]-1, self._player_grid_pos[1])
@@ -81,12 +79,8 @@ class GameApp(object):
                 self._player_grid_pos = new_coords
                 self._player_direction = 'Left'
                 self._view.update_frames(self._player_direction)
-                if check_coords in self._view.get_map() and not self._view.out_of_bounds(new_coords):
-                    draw_flag = True
-                elif self._view.out_of_bounds(new_coords) and new_coords[0] > 14 and new_coords[0] < MAP_SIZE - 15:
-                    self.refresh_view(draw_flag, 1)
-                else:
-                    self.refresh_view(draw_flag)
+                print(self._view.out_of_bounds(new_coords))
+                self.refresh_view(self._view.out_of_bounds(new_coords))
 
         elif key == "Right":
             x = self._player_grid_pos[0]
@@ -99,13 +93,8 @@ class GameApp(object):
                 self._player_grid_pos = new_coords
                 self._player_direction = 'Right'
                 self._view.update_frames(self._player_direction)
-                if check_coords in self._view.get_map() and not self._view.out_of_bounds(new_coords):
-                    draw_flag = True
-                    self.refresh_view(draw_flag)
-                elif self._view.out_of_bounds(new_coords) and new_coords[0] > 14 and new_coords[0] < MAP_SIZE - 15:
-                    self.refresh_view(draw_flag, 1)
-                else:
-                    self.refresh_view(draw_flag)
+                print(self._view.out_of_bounds(new_coords))
+                self.refresh_view(self._view.out_of_bounds(new_coords))
 
 
 def main():

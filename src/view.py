@@ -132,6 +132,8 @@ class GameView(tk.Canvas):
         width = MAP_SIZE
         height = MAP_SIZE
         count = 0
+        count1 = 0
+        count2 = 0
         for x in range(width):
             for y in range(height):
                 # top left
@@ -191,49 +193,62 @@ class GameView(tk.Canvas):
                 # middle
                 else:
                     self.map[(x, y)] = self.photo024,
-                    if y == 4 and count % 15 == 0:
+                    if y == 4 and count % 3 == 0:
                         self.map[(x, y)] = self.photo024, self.misc0
                     count += 1
+                    if y == 7 and count % 3 == 0:
+                        self.map[(x, y)] = self.photo024, self.misc0
+                    count1 += 1
+                    if y == 10 and count % 3 == 0:
+                        self.map[(x, y)] = self.photo024, self.misc0
+                    count2 += 1
 
     def draw_terrain(self, grid, draw_flag, adjust_flag):
-        if draw_flag or adjust_flag != 0:
-            self.delete('Terrain')
-            # Player grid positions
-            if adjust_flag == 0:
-                gridx = grid[0]
-                gridy = grid[1]
-            elif adjust_flag == 1:
-                gridx = grid[0]
-                if grid[1] < 8:
-                    gridy = 8
+        # Player grid positions
+        if draw_flag == 1:
+            return
+        elif draw_flag == 2 or draw_flag == 8:
+            gridx = grid[0]
+            if grid[1] < MAP_SIZE/2:
+                gridy = 8
+            else:
+                gridy = MAP_SIZE - 9
+        elif draw_flag == 3:
+            return
+        elif draw_flag == 5:
+            gridx = grid[0]
+            gridy = grid[1]
+        elif draw_flag == 4 or draw_flag == 6:
+            gridy = grid[1]
+            if grid[0] < MAP_SIZE/2:
+                gridx = 14
+            else:
+                gridx = MAP_SIZE - 16
+        elif draw_flag == 7:
+            return
+        elif draw_flag == 9:
+            return
+        self.delete('Terrain')
+
+        # Draws from top left to bottom right
+        for x in range(30):
+            for y in range(18):
+                # position in view
+                xcoord = OFFSET + x * 32
+                ycoord = OFFSET + y * 32
+
+                # positin in map dict
+                xmap = x + gridx - 14
+                ymap = y + gridy - 8
+
+                if len(self.map[(x + gridx - 14, y + gridy - 8)]) == 1:
+                    self.create_image(
+                        xcoord, ycoord, image=self.map[(xmap, ymap)][0], tag='Terrain')
                 else:
-                    gridy = MAP_SIZE - 8
-            # elif adjust_flag == 2:
-            #     gridx = grid[0]
-            #     if grid[1] < 8:
-            #         gridy = 8
-            #     else:
-            #         gridy = MAP_SIZE - 8
-
-            # Draws from top left to bottom right
-            for x in range(30):
-                for y in range(18):
-                    # position in view
-                    xcoord = OFFSET + x * 32
-                    ycoord = OFFSET + y * 32
-
-                    # positin in map dict
-                    xmap = x + gridx - 14
-                    ymap = y + gridy - 8
-
-                    if len(self.map[(x + gridx - 14, y + gridy - 8)]) == 1:
-                        self.create_image(
-                            xcoord, ycoord, image=self.map[(xmap, ymap)][0], tag='Terrain')
-                    else:
-                        self.create_image(
-                            xcoord, ycoord, image=self.map[(xmap, ymap)][0], tag='Terrain')
-                        self.create_image(
-                            xcoord, ycoord, image=self.map[(xmap, ymap)][1], tag='Terrain')
+                    self.create_image(
+                        xcoord, ycoord, image=self.map[(xmap, ymap)][0], tag='Terrain')
+                    self.create_image(
+                        xcoord, ycoord, image=self.map[(xmap, ymap)][1], tag='Terrain')
 
     def update_frames(self, direction):
         if direction == "Up":
@@ -266,10 +281,9 @@ class GameView(tk.Canvas):
 
         self.delete('Player')
 
-        centrex = OFFSET+START_POS[0]*32
-        centrey = OFFSET+START_POS[1]*32
-
-        if draw_flag:
+        if draw_flag == 5:
+            centrex = OFFSET+START_POS[0]*32
+            centrey = OFFSET+START_POS[1]*32
             if direction == 'Right':
                 self.create_image(centrex, centrey,
                                   image=self.right_frame[self.right], tag='Player')
@@ -283,18 +297,26 @@ class GameView(tk.Canvas):
                 self.create_image(centrex, centrey,
                                   image=self.up_frame[self.up], tag='Player')
         else:
-            if adjust_flag == 0:
-                # top left
-                if pos[0] <= 14 and pos[1] <= 8:
-                    currentx = OFFSET+pos[0]*32
-                    currenty = OFFSET+pos[1]*32
-                # top right
-                if pos[0] >= 85 and pos[1] <= 8:
-                    currentx = OFFSET+(pos[0]-70)*32
-                    currenty = OFFSET+pos[1]*32
-            elif adjust_flag == 1:
+            if draw_flag == 1:
+                currentx = OFFSET+pos[0]*32
+                currenty = OFFSET+pos[1]*32
+
+            elif draw_flag == 3:
+                # (pos[0]-(MAP_SIZE-30)) == 15
+                currentx = OFFSET+(pos[0]-(MAP_SIZE-30))*32
+                currenty = OFFSET+pos[1]*32
+
+            elif draw_flag == 2:
                 currentx = OFFSET+START_POS[0]*32
                 currenty = OFFSET+pos[1]*32
+
+            elif draw_flag == 4 or draw_flag == 6:
+                currenty = OFFSET+START_POS[1]*32
+                if pos[0] < MAP_SIZE/2:
+                    currentx = OFFSET+pos[0]*32
+                else:
+                    currentx = OFFSET+(pos[0]-(MAP_SIZE-30))*32
+
             if direction == 'Right':
                 self.create_image(currentx, currenty,
                                   image=self.right_frame[self.right], tag='Player')
@@ -309,7 +331,58 @@ class GameView(tk.Canvas):
                                   image=self.up_frame[self.up], tag='Player')
 
     def out_of_bounds(self, pos):
+        """
+                    1 |       2        |  3
+                    -----------------------
+                      |                |
+                      |                |
+                    4 |       5        |  6
+                      |                |
+                      |                |
+                    -----------------------
+                    7 |       8        |  9
+
+        Arguments:
+            pos {[type]} -- [description]
+
+        Returns:
+            [type] -- [description]
+        """
+
         x, y = pos[0], pos[1]
-        if x < 14 or y < 8 or x > MAP_SIZE - 16 or y > MAP_SIZE - 8:
-            return True
-        return False
+
+        # Cell 1
+        if x < 14 and y < 8:
+            return 1
+
+        # Cell 3
+        elif x > MAP_SIZE-16 and y < 8:
+            return 3
+
+        # Cell 7
+        elif x <= 14 and y >= MAP_SIZE-9:
+            return 7
+
+        # Cell 9
+        elif x >= MAP_SIZE-16 and y >= MAP_SIZE-9:
+            return 9
+
+        # Cell 2
+        elif y < 8:
+            return 2
+
+        # Cell 4
+        elif x < 14:
+            return 4
+
+        # Cell 6
+        elif x > MAP_SIZE-16:
+            return 6
+
+        # Cell 8
+        elif y >= MAP_SIZE-9:
+            return 8
+
+        # Cell 5
+        else:
+            return 5
