@@ -90,7 +90,7 @@ class GameApp(object):
                     self._player_direction = 'Right'
                     self._view.update_frames(self._player_direction)
                     self.refresh_view(self._view.out_of_bounds(new_coords))
-        self._master.after(50, self.refresh_character)
+        self._master.after(25, self.refresh_character)
 
 
 def main():
