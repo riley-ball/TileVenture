@@ -29,9 +29,6 @@ class GameApp(object):
         self.refresh_view(5)
 
         view.bind_all("<Key>", self._key_press)
-        # view.bind("<Down>", self._move_down)
-        # view.bind("<Left>", self._move_left)
-        # view.bind("<Right>", self._move_right)
 
     def _setup_game(self):
         self._view.generate_map()
