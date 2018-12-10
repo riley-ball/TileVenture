@@ -203,7 +203,7 @@ class GameView(tk.Canvas):
                         self.map[(x, y)] = self.photo024, self.misc0
                     count2 += 1
 
-    def draw_terrain(self, grid, draw_flag, adjust_flag):
+    def draw_terrain(self, grid, draw_flag):
         # Player grid positions
         if draw_flag == 1:
             return
@@ -272,7 +272,7 @@ class GameView(tk.Canvas):
             self.left = 0
             self.down = 0
 
-    def draw_player(self, pos, direction, draw_flag, adjust_flag):
+    def draw_player(self, pos, direction, draw_flag):
         """
         Draws player onto canvas.
         :param grid: Grid coordinates (0, 0) --> (14, 8).
