@@ -33,7 +33,6 @@ class GameApp(object):
         # view.bind_all("<Key>", self._key_press)
         view.bind_all("<KeyPress>", self._keydown)
         view.bind_all("<KeyRelease>", self._keyup)
-        self._key_flag = False
 
     def _setup_game(self):
         self._view.generate_map()
