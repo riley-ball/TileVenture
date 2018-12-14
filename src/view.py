@@ -127,6 +127,10 @@ class GameView(tk.Canvas):
     def get_map(self):
         return self.map
 
+    def reset(self):
+        self.delete('Terrain')
+        self.delete('Player')
+
     def generate_map(self):
         # L: 1
         width = MAP_SIZE
