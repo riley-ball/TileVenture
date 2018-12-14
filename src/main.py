@@ -89,8 +89,11 @@ class GameApp(object):
         self._edit_mode = not self._edit_mode
         print(self._edit_mode)
         if self._edit_mode:
-            self._view.reset()
+            self._view.reset_game()
+            self._view.draw_borders(self._game.grid.get_border_coordinates())
         else:
+            print(self._cell_pos)
+            self._view.reset_edit()
             self.refresh_view()
 
     def refresh_character(self):

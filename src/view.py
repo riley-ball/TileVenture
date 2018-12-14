@@ -127,9 +127,25 @@ class GameView(tk.Canvas):
     def get_map(self):
         return self.map
 
-    def reset(self):
+    def reset_edit(self):
+        self.delete('border')
+
+    def reset_game(self):
         self.delete('Terrain')
-        self.delete('Player')
+        # self.delete('Player')
+
+    def draw_borders(self, borders, fill='goldenrod'):
+        """
+        Draws the border lines of the game view, after first removing any existing
+        Parameters:
+            borders (iter<tuple<int, int>,
+                          tuple<int, int>>): A series of pixel positions for
+                                             laying out the borders of the view.
+            fill (str): The colour of the borders to draw
+        """
+        self.delete('border')
+        for start, end in borders:
+            self.create_line(start, end, fill=fill, tag='border')
 
     def generate_map(self):
         # L: 1
@@ -210,7 +226,8 @@ class GameView(tk.Canvas):
     def draw_terrain(self, grid, draw_flag):
         # Player grid positions
         if draw_flag == 1:
-            return
+            gridx = START_POS[0]
+            gridy = START_POS[1]
         elif draw_flag == 2 or draw_flag == 8:
             gridx = grid[0]
             if grid[1] < MAP_SIZE/2:
@@ -218,7 +235,8 @@ class GameView(tk.Canvas):
             else:
                 gridy = MAP_SIZE - 10
         elif draw_flag == 3:
-            return
+            gridx = MAP_SIZE-16
+            gridy = START_POS[1]
         elif draw_flag == 5:
             gridx = grid[0]
             gridy = grid[1]
@@ -229,9 +247,11 @@ class GameView(tk.Canvas):
             else:
                 gridx = MAP_SIZE - 16
         elif draw_flag == 7:
-            return
+            gridx = START_POS[0]
+            gridy = MAP_SIZE-10
         elif draw_flag == 9:
-            return
+            gridx = MAP_SIZE-16
+            gridy = MAP_SIZE-10
         self.delete('Terrain')
 
         # Draws from top left to bottom right
