@@ -1,5 +1,6 @@
 import tkinter as tk
-from PIL import Image
+from PIL import Image, ImageTk
+import glob
 
 from model import GridCoordinateTranslator, GRID_SIZE, MAP_SIZE, START_POS
 
@@ -12,6 +13,7 @@ class GameView(tk.Canvas):
         self.master = master
 
         self.size = size
+
         self.cell_size = cell_size
         self.photo000 = tk.PhotoImage(file="images/terrain/terrain_000.png")
         self.photo001 = tk.PhotoImage(file="images/terrain/terrain_001.png")
@@ -146,6 +148,10 @@ class GameView(tk.Canvas):
         self.delete('border')
         for start, end in borders:
             self.create_line(start, end, fill=fill, tag='border')
+
+    def edit_draw(self, pos):
+        x = pos[0]
+        y = pos[1]
 
     def generate_map(self):
         # L: 1
