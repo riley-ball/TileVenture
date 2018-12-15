@@ -35,19 +35,12 @@ class GameApp(object):
         """
 
         self._master = master
-        master.title('Game')
-
+        self._view = None
         self._game = game = GameModel()
 
-        # Game canvas
-        canvas_frame = tk.Canvas(master, width=960, height=576)
-        canvas_frame.pack(side=tk.LEFT)
+        self._canvas = None
 
-        self._view = view = GameView(canvas_frame, size=game.grid.cells,
-                                     cell_size=game.grid.cell_size,
-                                     bg='#1F1F1F')
-        view.pack()
-
+        self._show_gui()
         self._setup_game()
         self._cell_pos = 5
         self.refresh_view()
@@ -58,16 +51,57 @@ class GameApp(object):
         self.refresh_character()
 
         # view.bind_all("<Key>", self._key_press)
-        view.bind_all("<KeyPress>", self._keydown)
-        view.bind_all("<KeyRelease>", self._keyup)
+        self._view.bind_all("<KeyPress>", self._keydown)
+        self._view.bind_all("<KeyRelease>", self._keyup)
 
-        test_frame = tk.Frame(master, width=200, height=576,
+    def _show_gui(self):
+        # Game canvas
+        canvas_frame = tk.Canvas(self._master, width=960, height=576)
+        canvas_frame.pack(side=tk.LEFT)
+
+        self._view = view = GameView(canvas_frame, size=self._game.grid.cells,
+                                     cell_size=self._game.grid.cell_size,
+                                     bg='#1F1F1F')
+        view.pack()
+
+        # Test button
+        test_frame = tk.Frame(self._master, width=200, height=576,
                               highlightthickness=1, highlightbackground="black")
         test_frame.pack(side=tk.RIGHT)
+        test_frame.pack_propagate(0)
 
-        test_button = tk.Button(test_frame, text="test",
+        test2_frame = tk.Frame(test_frame, relief=tk.GROOVE,
+                               width=500, height=100, bd=1)
+        test2_frame.pack()
+
+        # Edit button
+        test_button = tk.Button(test_frame, text="Edit Mode",
                                 command=self._toggle_edit)
         test_button.pack()
+
+        # Scroll canvas
+        self._canvas = tk.Canvas(test2_frame)
+        frame = tk.Frame(self._canvas)
+        myscrollbar = tk.Scrollbar(
+            test2_frame, orient="vertical", command=self._canvas.yview)
+        self._canvas.configure(yscrollcommand=myscrollbar.set)
+
+        myscrollbar.pack(side="right", fill="y")
+        self._canvas.pack(side="left")
+        self._canvas.create_window((0, 0), window=frame, anchor='nw')
+        frame.bind("<Configure>", self._myfunction)
+        self._data(frame)
+
+    def _data(self, frame):
+        for i in range(50):
+            tk.Label(frame, text=i).grid(row=i, column=0)
+            tk.Label(frame, text="my text"+str(i)).grid(row=i, column=1)
+            tk.Label(frame, text="..........").grid(row=i, column=2)
+
+    def _myfunction(self, event):
+        self._canvas.configure(scrollregion=self._canvas.bbox(
+            "all"), width=200, height=200)
+        print("test")
 
     def _setup_game(self):
         self._view.generate_map()
@@ -87,12 +121,10 @@ class GameApp(object):
 
     def _toggle_edit(self):
         self._edit_mode = not self._edit_mode
-        print(self._edit_mode)
         if self._edit_mode:
             self._view.reset_game()
             self._view.draw_borders(self._game.grid.get_border_coordinates())
         else:
-            print(self._cell_pos)
             self._view.reset_edit()
             self.refresh_view()
 
@@ -145,6 +177,7 @@ def main():
     root.attributes('-topmost', True)
     root.after_idle(root.attributes, '-topmost', False)
     root.mainloop()
+    root.title("TileVenture")
 
 
 if __name__ == '__main__':
