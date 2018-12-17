@@ -3,6 +3,7 @@ import tkinter as tk
 from model import GameModel, MAP_SIZE, START_POS
 from view import GameView
 from edit import EditView
+from load import LoadData
 
 
 # class Player(object):
@@ -23,10 +24,13 @@ class GameApp(object):
     _player_direction = None
     _edit_mode = None
     _cell_pos = None
+    _images = None
+    _current_tile = None
 
     _master = None
     _game_view = None
     _game = None
+    _load = None
 
     def __init__(self, master):
         """Construct TileVenture game in root window
@@ -38,8 +42,9 @@ class GameApp(object):
         self._master = master
         self._game_view = None
         self._game = game = GameModel()
-
-        self._canvas = None
+        self._load = load = LoadData()
+        self._images = load.get_data()
+        self._current_tile = None
 
         self._show_gui()
         self._setup_game()
@@ -75,8 +80,41 @@ class GameApp(object):
                                 command=self._toggle_edit)
         edit_button.grid(row=0, column=0, pady=10)
 
-        self._edit_view = edit_view = EditView(edit_frame, bg='#1F1F1F')
-        self._edit_view.grid(row=1, column=0)
+        # Scroll canvas
+        frame = tk.Frame(edit_frame)
+        frame.grid(row=1, column=0)
+
+        self._canvas = tk.Canvas(
+            frame, bg='#FFFFFF', scrollregion=(0, 0, 0, 9770))
+
+        vbar = tk.Scrollbar(frame, orient=tk.VERTICAL)
+        vbar.pack(side=tk.RIGHT, fill=tk.Y)
+        vbar.config(command=self._canvas.yview)
+
+        self._canvas.config(width=200, height=500)
+        self._canvas.config(yscrollcommand=vbar.set)
+        self._canvas.pack(side=tk.LEFT, expand=True, fill=tk.BOTH)
+
+        # Edit shop
+        count = 0
+        pad = 26
+        for row in range(168):
+            for col in range(3):
+                xcoord = 16 + (col + 1) * pad + col * 32
+                ycoord = 16 + (row + 1) * pad + row * 32
+                image = self._images[count]
+                self._edit_view = edit_view = EditView(
+                    self._canvas, image, xcoord, ycoord,
+                    click_command=lambda tile_=image: self.select_tile(tile_), bg='#1F1F1F')
+                # self._canvas.tag_bind(
+                #     test, "<Button-1>", self._select_tile)
+                count += 1
+                if count == len(self._images):
+                    return
+
+    def select_tile(self, tile):
+        self._current_tile = tile
+        print(self._current_tile)
 
     def _setup_game(self):
         self._game_view.generate_map()
