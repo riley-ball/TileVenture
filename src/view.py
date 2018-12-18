@@ -117,7 +117,7 @@ class GameView(tk.Canvas):
         self.left = 0
         self.right = 0
 
-        self.map = {}
+        self._map = {}
 
         self.width, self.height = width, height = tuple(i * self.cell_size
                                                         for i in self.size)
@@ -127,7 +127,7 @@ class GameView(tk.Canvas):
         self.translator = GridCoordinateTranslator()
 
     def get_map(self):
-        return self.map
+        return self._map
 
     def reset_edit(self):
         self.delete('border')
@@ -135,6 +135,10 @@ class GameView(tk.Canvas):
     def reset_game(self):
         self.delete('Terrain')
         # self.delete('Player')
+    
+    def draw_preview(self, image, x, y):
+        self.delete('preview')
+        self.create_image(x, y, image=image, tag='preview')
 
     def draw_borders(self, borders, fill='goldenrod'):
         """
@@ -153,6 +157,9 @@ class GameView(tk.Canvas):
         x = pos[0]
         y = pos[1]
 
+    def add_tile(self, tile, x, y):
+        self._map[(x, y)] = tile,
+
     def generate_map(self):
         # L: 1
         width = MAP_SIZE
@@ -164,69 +171,69 @@ class GameView(tk.Canvas):
             for y in range(height):
                 # top left
                 if x == 0 and y == 0:
-                    self.map[(x, y)] = self.photo000,
+                    self._map[(x, y)] = self.photo000,
 
                 # top right
                 elif x == width-1 and y == 0:
-                    self.map[(x, y)] = self.photo002,
+                    self._map[(x, y)] = self.photo002,
 
                 # bottom left
                 elif x == 0 and y == height-1:
-                    self.map[(x, y)] = self.photo046,
+                    self._map[(x, y)] = self.photo046,
 
                 # bottom right
                 elif x == width-1 and y == height-1:
-                    self.map[(x, y)] = self.photo048,
+                    self._map[(x, y)] = self.photo048,
 
                 # top border
 
                 elif y == 0:
-                    self.map[(x, y)] = self.photo001,
+                    self._map[(x, y)] = self.photo001,
 
                 # bottom border
                 elif y == height-1:
-                    self.map[(x, y)] = self.photo047,
+                    self._map[(x, y)] = self.photo047,
 
                 # left border
                 elif x == 0:
-                    self.map[(x, y)] = self.photo023,
+                    self._map[(x, y)] = self.photo023,
 
                 # right border
                 elif x == width-1:
-                    self.map[(x, y)] = self.photo025,
+                    self._map[(x, y)] = self.photo025,
 
                 # small lake
                 elif (x >= 26 and x <= 28) and (y >= 14 and y <= 16):
                     if x == 26 and y == 14:
-                        self.map[(x, y)] = self.lake0,
+                        self._map[(x, y)] = self.lake0,
                     elif x == 27 and y == 14:
-                        self.map[(x, y)] = self.lake1,
+                        self._map[(x, y)] = self.lake1,
                     elif x == 28 and y == 14:
-                        self.map[(x, y)] = self.lake2,
+                        self._map[(x, y)] = self.lake2,
                     elif x == 26 and y == 15:
-                        self.map[(x, y)] = self.lake3,
+                        self._map[(x, y)] = self.lake3,
                     elif x == 27 and y == 15:
-                        self.map[(x, y)] = self.lake4,
+                        self._map[(x, y)] = self.lake4,
                     elif x == 28 and y == 15:
-                        self.map[(x, y)] = self.lake5,
+                        self._map[(x, y)] = self.lake5,
                     elif x == 26 and y == 16:
-                        self.map[(x, y)] = self.lake6,
+                        self._map[(x, y)] = self.lake6,
                     elif x == 27 and y == 16:
-                        self.map[(x, y)] = self.lake7,
+                        self._map[(x, y)] = self.lake7,
                     elif x == 28 and y == 16:
-                        self.map[(x, y)] = self.lake8,
+                        self._map[(x, y)] = self.lake8,
 
                 # middle
                 else:
-                    self.map[(x, y)] = self.photo024,
+                    self._map[(x, y)] = self.photo024,
                     if y == 4 and count % 3 == 0:
-                        self.map[(x, y)] = self.photo024, self.misc0
+                        self._map[(x, y)] = self.photo024, self.misc0
                     count += 1
                     if y == 7 and count % 3 == 0:
-                        self.map[(x, y)] = self.photo024, self.misc0
+                        self._map[(x, y)] = self.photo024, self.misc0
                     count1 += 1
                     if y == 95 and count % 3 == 0:
-                        self.map[(x, y)] = self.photo024, self.misc0
+                        self._map[(x, y)] = self.photo024, self.misc0
                     count2 += 1
 
     def draw_terrain(self, grid, draw_flag):
@@ -271,14 +278,14 @@ class GameView(tk.Canvas):
                 xmap = x + gridx - 14
                 ymap = y + gridy - 8
 
-                if len(self.map[(x + gridx - 14, y + gridy - 8)]) == 1:
+                if len(self._map[(x + gridx - 14, y + gridy - 8)]) == 1:
                     self.create_image(
-                        xcoord, ycoord, image=self.map[(xmap, ymap)][0], tag='Terrain')
+                        xcoord, ycoord, image=self._map[(xmap, ymap)][0], tag='Terrain')
                 else:
                     self.create_image(
-                        xcoord, ycoord, image=self.map[(xmap, ymap)][0], tag='Terrain')
+                        xcoord, ycoord, image=self._map[(xmap, ymap)][0], tag='Terrain')
                     self.create_image(
-                        xcoord, ycoord, image=self.map[(xmap, ymap)][1], tag='Terrain')
+                        xcoord, ycoord, image=self._map[(xmap, ymap)][1], tag='Terrain')
 
     def update_frames(self, direction):
         if direction == "Up":

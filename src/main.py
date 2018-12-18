@@ -1,4 +1,5 @@
 import tkinter as tk
+import math
 
 from model import GameModel, MAP_SIZE, START_POS
 from view import GameView
@@ -59,6 +60,9 @@ class GameApp(object):
         # view.bind_all("<Key>", self._key_press)
         self._game_view.bind_all("<KeyPress>", self._keydown)
         self._game_view.bind_all("<KeyRelease>", self._keyup)
+        self._game_view.bind("<Motion>", self._motion)
+        self._game_view.bind("<Leave>", self._leave)
+        self._game_view.bind("<Button-1>", self._button_press)
 
     def _show_gui(self):
         # Game canvas
@@ -131,6 +135,19 @@ class GameApp(object):
 
     def _keydown(self, event):
         self._current_event = event
+
+    def _motion(self, event):
+        if self._edit_mode and self._current_tile != None:
+            self._game_view.draw_preview(self._current_tile, event.x, event.y)
+
+    def _leave(self, event):
+        self._game_view.delete('preview')
+
+    def _button_press(self, event):
+        if self._edit_mode and self._current_tile != None:
+            x = math.ceil((event.x + 16)/32)
+            y = math.ceil((event.y + 16)/32)
+            self._game_view.add_tile(self._current_tile, x, y)
 
     def _toggle_edit(self):
         self._edit_mode = not self._edit_mode

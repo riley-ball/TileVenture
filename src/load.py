@@ -10,7 +10,7 @@ class LoadData(object):
         self._load_images()
 
     def _load_images(self):
-        for filename in glob.glob("images/terrain/*.png"):
+        for filename in sorted(glob.glob("images/terrain/*.png")):
             image = Image.open(filename)
             photo = ImageTk.PhotoImage(image)
             self._images.append(photo)
