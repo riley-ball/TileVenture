@@ -118,7 +118,6 @@ class GameApp(object):
 
     def select_tile(self, tile):
         self._current_tile = tile
-        print(self._current_tile)
 
     def _setup_game(self):
         self._game_view.generate_map()
@@ -129,6 +128,11 @@ class GameApp(object):
         self._game_view.draw_terrain(self._player_grid_pos, self._cell_pos)
         self._game_view.draw_player(self._player_grid_pos,
                                     self._player_direction, self._cell_pos)
+
+    def refresh_edit_view(self):
+        self.refresh_game_view()
+        self._game_view.draw_borders(
+            self._game.grid.get_border_coordinates())
 
     def _keyup(self, event):
         self._current_event = None
@@ -145,14 +149,16 @@ class GameApp(object):
 
     def _button_press(self, event):
         if self._edit_mode and self._current_tile != None:
-            x = math.ceil((event.x + 16)/32)
-            y = math.ceil((event.y + 16)/32)
+            x = math.ceil((event.x - 32)/32)
+            y = math.ceil((event.y - 32)/32)
             self._game_view.add_tile(self._current_tile, x, y)
+            self.refresh_edit_view()
 
     def _toggle_edit(self):
         self._edit_mode = not self._edit_mode
         if self._edit_mode:
-            self._game_view.reset_game()
+            # Figure out how to make game transparent
+            # self._game_view.reset_game()
             self._game_view.draw_borders(
                 self._game.grid.get_border_coordinates())
         else:

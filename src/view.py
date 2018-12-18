@@ -135,12 +135,12 @@ class GameView(tk.Canvas):
     def reset_game(self):
         self.delete('Terrain')
         # self.delete('Player')
-    
+
     def draw_preview(self, image, x, y):
         self.delete('preview')
         self.create_image(x, y, image=image, tag='preview')
 
-    def draw_borders(self, borders, fill='goldenrod'):
+    def draw_borders(self, borders, fill='black'):
         """
         Draws the border lines of the game view, after first removing any existing
         Parameters:
